@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RAG Pattern — Diagram</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #ffffff; width: 1400px; padding: 64px; }
+.title { font-size: 34px; font-weight: 700; color: #1D1D1F; letter-spacing: -0.02em; }
+.sub { font-size: 16px; color: #86868B; margin: 8px 0 56px; }
+.phase-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #86868B; margin-bottom: 16px; }
+.phase { margin-bottom: 48px; }
+.row { display: flex; align-items: center; gap: 16px; }
+.box { background: #F5F5F7; border: 1px solid #D2D2D7; border-radius: 14px; padding: 18px 20px; min-width: 150px; }
+.box .l { font-size: 14px; font-weight: 700; color: #1D1D1F; }
+.box .s { font-size: 11px; color: #86868B; margin-top: 3px; }
+.box.blue { background: #E8F0FE; border-color: #A8C7FA; }
+.box.orange { background: #FFF4E5; border-color: #FFCC99; }
+.box.green { background: #E7F8EC; border-color: #A8E0BC; }
+.arrow { font-size: 22px; color: #86868B; }
+.divider { height: 1px; background: #D2D2D7; margin: 40px 0; }
+.note { background: #FFF9E6; border-left: 4px solid #FFCC00; padding: 16px 20px; border-radius: 8px; font-size: 14px; color: #1D1D1F; margin-top: 24px; }
+.note strong { color: #B8860B; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 40px; }
+.col h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+.col.good h3 { color: #34C759; }
+.col.bad h3 { color: #FF3B30; }
+.col ul { list-style: none; font-size: 13px; color: #86868B; line-height: 1.9; }
+</style>
+</head>
+<body>
+<div class="title">RAG — Retrieval-Augmented Generation</div>
+<div class="sub">Search first, then generate. Most RAG bugs are indexing bugs, not model bugs.</div>
+
+<div class="phase">
+  <div class="phase-label">Phase 1 — Index (offline, runs once)</div>
+  <div class="row">
+    <div class="box"><div class="l">Documents</div><div class="s">docs · tickets · policies</div></div>
+    <span class="arrow">→</span>
+    <div class="box"><div class="l">Chunk</div><div class="s">split into pieces</div></div>
+    <span class="arrow">→</span>
+    <div class="box blue"><div class="l">Embed</div><div class="s">text → vector</div></div>
+    <span class="arrow">→</span>
+    <div class="box blue"><div class="l">Vector DB</div><div class="s">store vectors</div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="phase">
+  <div class="phase-label">Phase 2 — Query (per request)</div>
+  <div class="row">
+    <div class="box"><div class="l">Question</div><div class="s">user query</div></div>
+    <span class="arrow">→</span>
+    <div class="box blue"><div class="l">Embed</div><div class="s">query → vector</div></div>
+    <span class="arrow">→</span>
+    <div class="box blue"><div class="l">Search</div><div class="s">top-k chunks</div></div>
+    <span class="arrow">→</span>
+    <div class="box orange"><div class="l">Guardrail</div><div class="s">score &lt; 0.15 → miss</div></div>
+    <span class="arrow">→</span>
+    <div class="box green"><div class="l">LLM</div><div class="s">grounded answer</div></div>
+  </div>
+  <div class="note">
+    <strong>The hidden risk:</strong> a retrieval miss gives the model plausible-but-wrong context — and it will use it confidently. Bad retrieval is more dangerous than no retrieval. Always add a score guardrail.
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="col good">
+    <h3>✅ Use RAG when</h3>
+    <ul>
+      <li>Knowledge changes (docs, tickets, inventory)</li>
+      <li>You need citations</li>
+      <li>Data is private / never trained on</li>
+      <li>Corpus exceeds context window</li>
+      <li>Freshness matters</li>
+    </ul>
+  </div>
+  <div class="col bad">
+    <h3>❌ Don't use RAG when</h3>
+    <ul>
+      <li>Answer is small &amp; static → just prompt it</li>
+      <li>Model already knows it → wasted latency</li>
+      <li>Need reasoning over ALL data → use code</li>
+      <li>One doc under 5k tokens → paste it whole</li>
+      <li>You can't measure recall → flying blind</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
