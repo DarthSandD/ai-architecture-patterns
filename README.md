@@ -71,6 +71,16 @@ Adding a pattern? It must include all four elements (diagram, tradeoffs, runnabl
 
 ---
 
+## Video walkthrough
+
+A 2-minute narrated walkthrough of the two real cases and the patterns behind them.
+
+- **Video:** [`video/ai-architecture-patterns.mp4`](./video/ai-architecture-patterns.mp4) — 1080p, 2 min
+- **Narration:** [`video/vo-01.mp3`](./video/vo-01.mp3)
+- **Slides:** [`assets/deck-final.html`](./assets/deck-final.html)
+
+---
+
 ## License
 
 MIT — use it, fork it, teach with it.

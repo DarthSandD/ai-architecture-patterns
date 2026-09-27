@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; font-family: 'Inter', -apple-system, sans-serif; }
+
+  .slide {
+    width: 1080px; height: 1350px; position: relative; overflow: hidden;
+    margin: 0 auto 40px; display: flex; flex-direction: column;
+  }
+  .dark { background: #0B0B0D; color: #F5F5F7; }
+  .light { background: #FFFFFF; color: #1D1D1F; }
+  .content { position: relative; z-index: 2; padding: 88px 80px; display: flex; flex-direction: column; height: 100%; }
+
+  /* ── typography ── */
+  .eyebrow { font-size: 18px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.45; margin-bottom: 46px; }
+  .eyebrow.acc { color: #FF453A; opacity: 1; }
+  h1 { font-family: 'Inter Tight', sans-serif; font-size: 104px; font-weight: 900; letter-spacing: -0.045em; line-height: 0.94; }
+  h1 .dim { opacity: 0.32; font-weight: 300; }
+  h1 .acc { color: #FF453A; }
+  h2 { font-family: 'Inter Tight', sans-serif; font-size: 72px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.02; }
+  h3 { font-family: 'Inter Tight', sans-serif; font-size: 44px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.12; }
+  .lead { font-size: 31px; line-height: 1.5; font-weight: 300; opacity: 0.72; margin-top: 40px; }
+  .lead b { font-weight: 600; opacity: 1; }
+
+  /* ── structural ── */
+  .hair { height: 1px; background: currentColor; opacity: 0.14; }
+  .accentbar { width: 68px; height: 5px; background: #FF453A; border-radius: 3px; }
+  .accentbar.blue { background: #0A84FF; }
+  .accentbar.green { background: #30D158; }
+
+  /* case header */
+  .casenum { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700; letter-spacing: 0.08em; }
+  .meta { display: flex; gap: 12px; margin-bottom: 38px; flex-wrap: wrap; }
+  .tag { font-size: 17px; font-weight: 600; padding: 8px 18px; border-radius: 999px; border: 1px solid currentColor; opacity: 0.5; }
+  .tag.solid { background: #FF453A; border-color: #FF453A; color: #fff; opacity: 1; }
+
+  /* the giant number */
+  .mega { font-family: 'Inter Tight', sans-serif; font-size: 190px; font-weight: 900; letter-spacing: -0.06em; line-height: 0.86; }
+  .mega.red { color: #FF453A; }
+
+  /* quote block */
+  .quote { border-left: 4px solid #FF453A; padding: 8px 0 8px 34px; margin-top: 44px; }
+  .quote .q { font-size: 30px; line-height: 1.44; font-weight: 400; font-style: italic; opacity: 0.94; }
+  .quote .src { font-size: 20px; margin-top: 18px; opacity: 0.45; font-style: normal; font-weight: 500; }
+
+  /* pattern strip */
+  .pattern { margin-top: auto; padding: 34px 36px; border-radius: 4px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); }
+  .light .pattern { background: #F5F5F7; border: 1px solid #E5E5E7; }
+  .pattern .pl { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #0A84FF; margin-bottom: 14px; }
+  .pattern .pt { font-size: 26px; line-height: 1.45; font-weight: 400; opacity: 0.9; }
+
+  /* grid texture */
+  .grid-bg { position: absolute; inset: 0; z-index: 1;
+    background-image: linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+    background-size: 90px 90px; }
+  .light .grid-bg { background-image: linear-gradient(rgba(0,0,0,0.032) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0,0,0,0.032) 1px, transparent 1px); }
+
+  /* glow orb */
+  .orb { position: absolute; width: 760px; height: 760px; border-radius: 50%; filter: blur(130px); opacity: 0.20; z-index: 0; }
+  .orb.red { background: #FF453A; }
+  .orb.blue { background: #0A84FF; }
+
+  /* footer */
+  .foot { position: absolute; bottom: 46px; left: 80px; right: 80px; display: flex; justify-content: space-between; font-size: 17px; opacity: 0.34; z-index: 3; }
+  .foot .pg { font-family: 'JetBrains Mono', monospace; }
+
+  /* flow steps */
+  .steps { margin-top: 34px; }
+  .step { display: flex; gap: 26px; padding: 26px 0; align-items: flex-start; border-bottom: 1px solid rgba(255,255,255,0.09); }
+  .light .step { border-bottom: 1px solid #E5E5E7; }
+  .step:last-child { border-bottom: none; }
+  .step .idx { font-family: 'JetBrains Mono', monospace; font-size: 21px; font-weight: 700; opacity: 0.4; padding-top: 6px; width: 46px; flex-shrink: 0; }
+  .step .body { font-size: 27px; line-height: 1.42; font-weight: 400; }
+  .step .body span { opacity: 0.5; }
+  .step .body b { font-weight: 600; }
+  .step.bad .idx { color: #FF453A; opacity: 1; }
+
+  /* list */
+  .checklist { margin-top: 30px; }
+  .ci { display: flex; gap: 24px; padding: 26px 0; border-bottom: 1px solid rgba(255,255,255,0.09); align-items: center; }
+  .ci:last-child { border-bottom: none; }
+  .ci .mark { font-size: 27px; flex-shrink: 0; }
+  .ci .lbl { font-size: 28px; font-weight: 600; }
+  .ci .sub { font-size: 21px; opacity: 0.45; margin-top: 5px; font-weight: 400; }
+
+  .url { font-family: 'Inter Tight', sans-serif; font-size: 34px; font-weight: 700; color: #0A84FF; margin-top: 26px; word-break: break-all; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ 01 — COVER ═══════════ -->
+<div class="slide dark">
+  <div class="grid-bg"></div>
+  <div class="orb red" style="top:-260px; right:-220px;"></div>
+  <div class="content">
+    <div class="eyebrow acc">AI Architecture · Real Cases</div>
+    <h1>It didn't<br>crash.<br><span class="acc">It just<br>lied.</span></h1>
+    <p class="lead">Two documented incidents where AI systems caused real damage — and the <b>architecture decision</b> that would have prevented each one.</p>
+    <div class="pattern" style="margin-top:56px;">
+      <div class="pl">Inside</div>
+      <div class="pt">Case 01 — Air Canada · a chatbot, a tribunal, and a confident wrong answer<br>Case 02 — Amazon · $1.8M burned by a job nobody was watching</div>
+    </div>
+  </div>
+  <div class="foot"><span>Every claim sourced on its slide</span><span class="pg">01</span></div>
+</div>
+
+<!-- ═══════════ 02 — CASE 1: AIR CANADA ═══════════ -->
+<div class="slide dark">
+  <div class="grid-bg"></div>
+  <div class="orb red" style="top:-200px; left:-280px; opacity:0.14;"></div>
+  <div class="content">
+    <div class="meta">
+      <span class="casenum" style="opacity:0.45;">CASE 01</span>
+      <span class="tag solid">2024</span>
+      <span class="tag">Air Canada</span>
+      <span class="tag">Tribunal ruled against them</span>
+    </div>
+    <h2>A grieving man asked<br>a chatbot about a<br>bereavement refund.</h2>
+    <p class="lead">It gave him the wrong policy — <b>in a calm, official, confident voice.</b> He trusted it. He booked a full-price ticket.</p>
+    <div class="quote">
+      <div class="q">"While a chatbot has an interactive component, it is still just a part of Air Canada's website."</div>
+      <div class="src">— BC Civil Resolution Tribunal, Moffatt v. Air Canada</div>
+    </div>
+    <div class="pattern">
+      <div class="pl">The pattern → RAG</div>
+      <div class="pt">A retrieval miss doesn't throw an error. It produces a fluent, confident, wrong answer. Without a score guardrail, a hit and a miss look identical.</div>
+    </div>
+  </div>
+  <div class="foot"><span>Source: Moffatt v. Air Canada (BC CRT, 2024) · BBC · The Guardian</span><span class="pg">02</span></div>
+</div>
+
+<!-- ═══════════ 03 — CASE 1: THE MECHANISM ═══════════ -->
+<div class="slide light">
+  <div class="grid-bg"></div>
+  <div class="content">
+    <div class="accentbar"></div>
+    <h3 style="margin-top:26px;">How a confident<br>wrong answer happens</h3>
+    <div class="steps">
+      <div class="step"><div class="idx">01</div><div class="body">The question arrives. <span>Ordinary request, ordinary user.</span></div></div>
+      <div class="step bad"><div class="idx">02</div><div class="body"><b>Retrieval misses.</b> <span>Similar words, different meaning.</span></div></div>
+      <div class="step bad"><div class="idx">03</div><div class="body">The model uses it anyway. <span>It cannot see that retrieval failed.</span></div></div>
+      <div class="step bad"><div class="idx">04</div><div class="body"><b>Confident, fluent, wrong.</b> <span>No error. No "I don't know."</span></div></div>
+    </div>
+    <div class="pattern" style="margin-top:auto;">
+      <div class="pl">The rule</div>
+      <div class="pt">A retrieval miss is worse than no retrieval at all — because a miss looks exactly like success.</div>
+    </div>
+  </div>
+  <div class="foot"><span>AI Architecture Patterns</span><span class="pg">03</span></div>
+</div>
+
+<!-- ═══════════ 04 — CASE 2: AMAZON ═══════════ -->
+<div class="slide dark">
+  <div class="grid-bg"></div>
+  <div class="orb blue" style="bottom:-260px; right:-200px; opacity:0.16;"></div>
+  <div class="content">
+    <div class="meta">
+      <span class="casenum" style="opacity:0.45;">CASE 02</span>
+      <span class="tag solid">2026</span>
+      <span class="tag">Amazon · internal</span>
+      <span class="tag">860% over budget</span>
+    </div>
+    <div class="mega red">$1.8M</div>
+    <h3 style="margin-top:34px;">One Claude job. Five months<br>before anyone noticed.</h3>
+    <p class="lead">It was meant to match author records to product listings. It ran 860% over budget — <b>and failed anyway.</b> Two more projects overshot by $541K and $134K.</p>
+    <div class="quote">
+      <div class="q">Buggy code crashes. A misconfigured model job just keeps running — and quietly bills you.</div>
+      <div class="src">— the difference that turns a mistake into a seven-figure invoice</div>
+    </div>
+    <div class="pattern">
+      <div class="pl">The pattern → Cost &amp; Latency Budgets</div>
+      <div class="pt">Set a per-request and per-user ceiling. Profile the dominant stage. Cache, route, reduce — in that order. Never reach for the frontier model by default.</div>
+    </div>
+  </div>
+  <div class="foot"><span>Source: Financial Times / Tom's Hardware (Jul 2026)</span><span class="pg">04</span></div>
+</div>
+
+<!-- ═══════════ 05 — THE BRIDGE ═══════════ -->
+<div class="slide light">
+  <div class="grid-bg"></div>
+  <div class="content" style="justify-content:center;">
+    <div class="accentbar blue"></div>
+    <h2 style="margin-top:34px;">Both were<br>preventable.<br><span style="color:#0A84FF;">At design time.</span></h2>
+    <p class="lead">Not with a better prompt. Not with a bigger model.<br><b>With a boundary, a budget, or a check.</b></p>
+    <div class="checklist" style="margin-top:56px;">
+      <div class="ci"><span class="mark">▸</span><div><div class="lbl">A guardrail</div><div class="sub">Catches the miss before the user does</div></div></div>
+      <div class="ci"><span class="mark">▸</span><div><div class="lbl">A budget</div><div class="sub">Stops a runaway job before month-end</div></div></div>
+      <div class="ci"><span class="mark">▸</span><div><div class="lbl">A verification gate</div><div class="sub">Finds the error before it ships</div></div></div>
+    </div>
+  </div>
+  <div class="foot"><span>AI Architecture Patterns</span><span class="pg">05</span></div>
+</div>
+
+<!-- ═══════════ 06 — CLOSE ═══════════ -->
+<div class="slide dark">
+  <div class="grid-bg"></div>
+  <div class="orb red" style="bottom:-300px; left:-240px; opacity:0.13;"></div>
+  <div class="content" style="justify-content:center;">
+    <div class="eyebrow acc">AI Architecture Patterns</div>
+    <h2>I wrote down the<br>patterns behind<br>these failures.</h2>
+    <p class="lead">One page each — a diagram, the tradeoffs, a runnable demo,<br>and the part everyone skips: <b>when NOT to use it.</b></p>
+    <div class="pattern" style="margin-top:56px;">
+      <div class="pl">The library</div>
+      <div class="pt" style="font-size:29px;">RAG · Tool Use · Multi-Agent · Memory<br>Evals · Guardrails · Context · Cost Budgets</div>
+      <div class="url">github.com/DarthSandD/ai-architecture-patterns</div>
+    </div>
+  </div>
+  <div class="foot"><span>A pattern without failure modes isn't architecture. It's a sales pitch.</span><span class="pg">06</span></div>
+</div>
+
+</body>
+</html>

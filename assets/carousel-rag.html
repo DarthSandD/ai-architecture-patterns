@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #e5e5e5; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+
+  .slide {
+    width: 1080px; height: 1350px; background: #FFFFFF;
+    padding: 96px 88px; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center;
+    margin: 0 auto 40px;
+  }
+
+  .eyebrow {
+    font-size: 20px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #86868B; margin-bottom: 44px;
+  }
+
+  h1 {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 92px; font-weight: 800; letter-spacing: -0.035em;
+    line-height: 1.02; color: #1D1D1F;
+  }
+  h1 .red { color: #FF3B30; }
+  h1 .blue { color: #0071E3; }
+
+  h2 {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 68px; font-weight: 700; letter-spacing: -0.03em;
+    line-height: 1.08; color: #1D1D1F;
+  }
+
+  p.body {
+    font-size: 30px; line-height: 1.5; color: #6E6E73;
+    margin-top: 40px; font-weight: 400;
+  }
+
+  .rule { width: 72px; height: 6px; background: #0071E3; border-radius: 3px; margin-bottom: 44px; }
+  .rule.red { background: #FF3B30; }
+
+  /* Slide 2 — the mechanism */
+  .flow { margin-top: 24px; }
+  .flow-step {
+    display: flex; align-items: flex-start; gap: 28px;
+    padding: 34px 0; border-bottom: 1px solid #E5E5E7;
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .num {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 26px; font-weight: 700; color: #FFFFFF;
+    background: #1D1D1F; width: 54px; height: 54px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .num.bad { background: #FF3B30; }
+  .flow-step .txt { font-size: 29px; line-height: 1.45; color: #1D1D1F; padding-top: 6px; }
+  .flow-step .txt span { color: #86868B; }
+  .flow-step .txt b { font-weight: 600; }
+
+  /* Slide 4 — list */
+  .items { margin-top: 20px; }
+  .item {
+    display: flex; align-items: center; gap: 26px;
+    padding: 30px 0; border-bottom: 1px solid #E5E5E7;
+  }
+  .item:last-child { border-bottom: none; }
+  .item .check { font-size: 34px; flex-shrink: 0; }
+  .item .label { font-size: 30px; font-weight: 600; color: #1D1D1F; }
+  .item .sub { font-size: 24px; color: #86868B; margin-top: 4px; font-weight: 400; }
+
+  /* Slide 5 — CTA */
+  .cta-url {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 34px; font-weight: 600; color: #0071E3;
+    margin-top: 56px; word-break: break-all;
+  }
+  .cta-note { font-size: 26px; color: #86868B; margin-top: 24px; }
+
+  .pagenum {
+    position: absolute; bottom: 56px; right: 88px;
+    font-size: 22px; color: #C7C7CC; font-weight: 600;
+    font-family: 'Inter Tight', sans-serif;
+  }
+  .brandtag {
+    position: absolute; bottom: 56px; left: 88px;
+    font-size: 22px; color: #86868B; font-weight: 500;
+  }
+  .big-mark {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 220px; font-weight: 800; color: #F5F5F7;
+    position: absolute; top: -30px; right: 60px; letter-spacing: -0.05em;
+    z-index: 0;
+  }
+  .content { position: relative; z-index: 1; }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 — HOOK -->
+<div class="slide" id="s1">
+  <div class="content">
+    <div class="eyebrow">Pattern 01 · RAG</div>
+    <h1>It answered<br>with total<br>confidence.<br><span class="red">It was wrong.</span></h1>
+    <p class="body">And that's the failure mode nobody warns you about.</p>
+  </div>
+  <div class="brandtag">AI Architecture Patterns</div>
+  <div class="pagenum">1 / 5</div>
+</div>
+
+<!-- SLIDE 2 — MECHANISM -->
+<div class="slide" id="s2">
+  <div class="content">
+    <div class="rule red"></div>
+    <h2>What actually<br>happened</h2>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="num">1</div>
+        <div class="txt">The question came in. <span>Normal request.</span></div>
+      </div>
+      <div class="flow-step">
+        <div class="num bad">2</div>
+        <div class="txt"><b>Retrieval missed.</b> It pulled the wrong chunks — <span>similar words, different meaning.</span></div>
+      </div>
+      <div class="flow-step">
+        <div class="num bad">3</div>
+        <div class="txt">The model used them anyway. <span>It doesn't know retrieval failed.</span></div>
+      </div>
+      <div class="flow-step">
+        <div class="num bad">4</div>
+        <div class="txt"><b>Confident, fluent, wrong.</b> <span>No error. No "I don't know."</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="brandtag">AI Architecture Patterns</div>
+  <div class="pagenum">2 / 5</div>
+</div>
+
+<!-- SLIDE 3 — THE INSIGHT -->
+<div class="slide" id="s3">
+  <div class="big-mark">"</div>
+  <div class="content">
+    <div class="rule"></div>
+    <h1 style="font-size:78px;">A retrieval miss is worse than <span class="blue">no retrieval</span> at all.</h1>
+    <p class="body">Because a miss doesn't fail loudly.<br>It looks exactly like success.</p>
+  </div>
+  <div class="brandtag">AI Architecture Patterns</div>
+  <div class="pagenum">3 / 5</div>
+</div>
+
+<!-- SLIDE 4 — WHAT'S IN IT -->
+<div class="slide" id="s4">
+  <div class="content">
+    <div class="rule"></div>
+    <h2 style="font-size:60px;">So I wrote the<br>pattern down</h2>
+    <div class="items">
+      <div class="item"><span class="check">📐</span><div><div class="label">The diagram</div><div class="sub">Index phase vs query phase</div></div></div>
+      <div class="item"><span class="check">⚖️</span><div><div class="label">The tradeoffs</div><div class="sub">Latency · cost · complexity · failure surface</div></div></div>
+      <div class="item"><span class="check">▶️</span><div><div class="label">A runnable demo</div><div class="sub">With a score guardrail that catches misses</div></div></div>
+      <div class="item"><span class="check">🚫</span><div><div class="label">When NOT to use it</div><div class="sub">The part everyone skips</div></div></div>
+    </div>
+  </div>
+  <div class="brandtag">AI Architecture Patterns</div>
+  <div class="pagenum">4 / 5</div>
+</div>
+
+<!-- SLIDE 5 — CTA -->
+<div class="slide" id="s5">
+  <div class="content">
+    <div class="rule"></div>
+    <h2>If your answer is small and static — <span style="color:#0071E3">just put it in the prompt.</span></h2>
+    <p class="body">RAG adds a database for nothing.</p>
+    <div class="cta-url">github.com/DarthSandD/<br>ai-architecture-patterns</div>
+    <div class="cta-note">A pattern without failure modes isn't architecture.<br>It's a sales pitch.</div>
+  </div>
+  <div class="brandtag">AI Architecture Patterns</div>
+  <div class="pagenum">5 / 5</div>
+</div>
+
+</body>
+</html>
