@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>Memory</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:#fff;width:1400px;padding:64px}
+.title{font-size:34px;font-weight:700;color:#1D1D1F;letter-spacing:-.02em}
+.sub{font-size:16px;color:#86868B;margin:8px 0 44px}
+.tiers{display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
+.tier{border-radius:16px;padding:20px 24px;display:flex;justify-content:space-between;align-items:center}
+.t1{background:#E8F0FE;border:1px solid #A8C7FA}
+.t2{background:#FFF4E5;border:1px solid #FFCC99}
+.t3{background:#E7F8EC;border:1px solid #A8E0BC}
+.tier .l{font-size:16px;font-weight:700;color:#1D1D1F}
+.tier .s{font-size:12px;color:#86868B;margin-top:4px}
+.tier .meta{text-align:right;font-size:12px;color:#86868B}
+.tier .meta b{display:block;font-size:13px;color:#1D1D1F}
+.note{background:#FFEBE9;border-left:4px solid #FF3B30;padding:16px 20px;border-radius:8px;font-size:14px;margin-top:8px}
+.note strong{color:#FF3B30}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:36px}
+.col h3{font-size:15px;font-weight:700;margin-bottom:12px}
+.col.g h3{color:#34C759}.col.b h3{color:#FF3B30}
+.col ul{list-style:none;font-size:13px;color:#86868B;line-height:1.9}
+.fails{margin-top:36px;background:#F5F5F7;border-radius:16px;padding:26px}
+.fails h3{font-size:16px;font-weight:700;margin-bottom:14px}
+.fails ol{font-size:13px;color:#1D1D1F;line-height:2;padding-left:20px}
+</style></head><body>
+<div class="title">Memory — three tiers</div>
+<div class="sub">Memory is a retrieval problem, not a storage problem.</div>
+
+<div class="tiers">
+<div class="tier t1"><div><div class="l">1 · Short-term</div><div class="s">Conversation buffer — last N turns</div></div><div class="meta"><b>Context window</b>fast · free · limited</div></div>
+<div class="tier t2"><div><div class="l">2 · Working</div><div class="s">Summary / scratchpad — compressed history</div></div><div class="meta"><b>In the prompt</b>survives overflow</div></div>
+<div class="tier t3"><div><div class="l">3 · Long-term</div><div class="s">Vector store / database — facts, preferences</div></div><div class="meta"><b>External store</b>retrieved on relevance</div></div>
+</div>
+
+<div class="note"><strong>The hidden risk: memory pollution.</strong> Every stored fact becomes a future retrieval candidate. The failure mode isn't "forgot" — it's "remembered the wrong thing and used it confidently." A small, high-quality memory beats a large, noisy one.</div>
+
+<div class="two">
+<div class="col g"><h3>✅ Use memory when</h3><ul>
+<li>Conversations span sessions</li><li>Preferences must persist</li>
+<li>Tasks exceed the context window</li><li>Personalization matters</li>
+<li>Multi-day workflows</li></ul></div>
+<div class="col b"><h3>❌ Don't use memory when</h3><ul>
+<li>Each request is stateless</li><li>You can't scope what to remember</li>
+<li>Data is sensitive and unmanaged</li><li>Stale facts are worse than none</li>
+<li>No retrieval evaluation</li><li>Session is short + single-purpose</li></ul></div>
+</div>
+
+<div class="fails"><h3>⚠️ The five failure modes — test all before shipping</h3>
+<ol><li><b>Forgetting</b> — the fact was never stored</li>
+<li><b>Wrong recall</b> — a similar but incorrect memory surfaced</li>
+<li><b>Pollution</b> — too many memories, signal lost</li>
+<li><b>Staleness</b> — a superseded fact returned</li>
+<li><b>Leakage</b> — user A's memory surfaced for user B</li></ol></div>
+</body></html>

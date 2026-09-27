@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>Evals</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:#fff;width:1400px;padding:64px}
+.title{font-size:34px;font-weight:700;color:#1D1D1F;letter-spacing:-.02em}
+.sub{font-size:16px;color:#86868B;margin:8px 0 44px}
+.pipe{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.box{background:#F5F5F7;border:1px solid #D2D2D7;border-radius:14px;padding:16px 18px;min-width:120px;text-align:center}
+.box .l{font-size:14px;font-weight:700;color:#1D1D1F}.box .s{font-size:11px;color:#86868B;margin-top:3px}
+.blue{background:#E8F0FE;border-color:#A8C7FA}.orange{background:#FFF4E5;border-color:#FFCC99}
+.green{background:#E7F8EC;border-color:#A8E0BC}.red{background:#FFEBE9;border-color:#FFB3AD}
+.arrow{font-size:20px;color:#86868B}
+.note{background:#FFEBE9;border-left:4px solid #FF3B30;padding:16px 20px;border-radius:8px;font-size:14px;margin-top:24px}
+.note strong{color:#FF3B30}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:36px}
+.col h3{font-size:15px;font-weight:700;margin-bottom:12px}
+.col.g h3{color:#34C759}.col.b h3{color:#FF3B30}
+.col ul{list-style:none;font-size:13px;color:#86868B;line-height:1.9}
+table{width:100%;border-collapse:collapse;margin-top:36px;font-size:13px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid #D2D2D7}
+th{font-weight:700;color:#1D1D1F;background:#F5F5F7}
+td{color:#86868B}td b{color:#1D1D1F}
+.pyramid{margin-top:36px;background:#F5F5F7;border-radius:16px;padding:26px;text-align:center}
+.pyramid h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.pyramid pre{font-size:13px;color:#1D1D1F;line-height:1.8;font-family:'JetBrains Mono',monospace;text-align:left;display:inline-block}
+</style></head><body>
+<div class="title">Evals — the diff matters more than the score</div>
+<div class="sub">An eval without a baseline and a gate is just a demo.</div>
+
+<div class="pipe">
+<div class="box"><div class="l">Test set</div><div class="s">inputs + expected</div></div>
+<span class="arrow">→</span>
+<div class="box blue"><div class="l">System under test</div><div class="s">prompt / model / retrieval</div></div>
+<span class="arrow">→</span>
+<div class="box orange"><div class="l">Scorer</div><div class="s">exact / rubric / model</div></div>
+<span class="arrow">→</span>
+<div class="box green"><div class="l">Score + diff</div><div class="s">vs baseline</div></div>
+<span class="arrow">→</span>
+<div class="box red"><div class="l">CI gate</div><div class="s">blocks regressions</div></div>
+</div>
+
+<div class="note"><strong>The hidden risk: the eval becomes the target.</strong> Optimize against a narrow test set and you get Goodhart's law — the metric improves, the product doesn't. Rotate cases, hold out a set, and add every production bug as a new case.</div>
+
+<div class="two">
+<div class="col g"><h3>✅ Use evals when</h3><ul>
+<li>Before every prompt/model change</li><li>Choosing between models</li>
+<li>Quality is subjective</li><li>You have a regression history</li>
+<li>Stakeholders need evidence</li></ul></div>
+<div class="col b"><h3>❌ Don't use evals when</h3><ul>
+<li>You can't define "correct"</li><li>Test set is tiny + unrepresentative</li>
+<li>A unit test would suffice</li><li>Same model judges itself</li>
+<li>There's no gate</li><li>You're scoring vibes on 3 cases</li></ul></div>
+</div>
+
+<table>
+<tr><th>Scorer</th><th>How</th><th>Use when</th><th>Weakness</th></tr>
+<tr><td><b>Exact match</b></td><td>string equality</td><td>Classification, extraction</td><td>Brittle to phrasing</td></tr>
+<tr><td><b>Contains / regex</b></td><td>substring check</td><td>Must-include facts</td><td>Ignores quality</td></tr>
+<tr><td><b>Rubric</b></td><td>rule checklist</td><td>Structured outputs</td><td>Hand-built rules</td></tr>
+<tr><td><b>Model judge</b></td><td>LLM scores it</td><td>Subjective quality</td><td>Biased, costs money</td></tr>
+<tr><td><b>Human</b></td><td>People label</td><td>High stakes</td><td>Slow, expensive</td></tr>
+</table>
+
+<div class="pyramid"><h3>The eval pyramid</h3>
+<pre>        ▲  Human review        (rare, high-stakes)
+       ███  Model judge        (subjective quality)
+      █████  Rubric/contains   (structure + facts)
+     ███████  Exact/unit tests (cheap, always-on)
+
+  Run the bottom layer on every commit. Climb only when needed.</pre></div>
+</body></html>

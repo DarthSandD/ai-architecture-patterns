@@ -21,14 +21,15 @@ This is that library. One folder per pattern. Each one gives you:
 |---|---------|--------|------------------------|
 | 01 | [RAG](./patterns/01-rag/) | ✅ **built** | "When do I need retrieval, and when is it just a prompt?" |
 | 02 | [Tool Use](./patterns/02-tool-use/) | ✅ **built** | "How do I let a model take actions safely?" |
-| 03 | [Multi-Agent](./patterns/03-multi-agent/) | 🔜 planned | "Do I actually need multiple agents, or one good loop?" |
-| 04 | [Memory](./patterns/04-memory/) | 🔜 planned | "Where does state live across turns?" |
-| 05 | [Evals](./patterns/05-evals/) | 🔜 planned | "How do I know it got worse?" |
-| 06 | [Guardrails](./patterns/06-guardrails/) | 🔜 planned | "How do I stop bad outputs before they ship?" |
-| 07 | [Context Engineering](./patterns/07-context-engineering/) | 🔜 planned | "Why does it forget the middle of my prompt?" |
-| 08 | [Cost & Latency Budgets](./patterns/08-cost-latency-budgets/) | 🔜 planned | "Why is this slow and expensive?" |
+| 03 | [Multi-Agent](./patterns/03-multi-agent/) | ✅ **built** | "Do I actually need multiple agents, or one good loop?" |
+| 04 | [Memory](./patterns/04-memory/) | ✅ **built** | "Where does state live across turns?" |
+| 05 | [Evals](./patterns/05-evals/) | ✅ **built** | "How do I know it got worse?" |
+| 06 | [Guardrails](./patterns/06-guardrails/) | ✅ **built** | "How do I stop bad outputs before they ship?" |
+| 07 | [Context Engineering](./patterns/07-context-engineering/) | ✅ **built** | "Why does it forget the middle of my prompt?" |
+| 08 | [Cost & Latency Budgets](./patterns/08-cost-latency-budgets/) | ✅ **built** | "Why is this slow and expensive?" |
 
 > **Built** = diagram + tradeoffs + runnable demo + when-NOT-to-use, all present.
+> Every demo runs with `python demo.py` — stdlib only, no API keys.
 
 ---
 

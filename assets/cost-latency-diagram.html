@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>Cost &amp; Latency</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:#fff;width:1400px;padding:64px}
+.title{font-size:34px;font-weight:700;color:#1D1D1F;letter-spacing:-.02em}
+.sub{font-size:16px;color:#86868B;margin:8px 0 44px}
+.budgetbox{border:2px solid #1D1D1F;border-radius:18px;padding:24px;margin-bottom:24px;background:#F7FAFF}
+.budget-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0071E3;margin-bottom:16px}
+.stage{display:grid;grid-template-columns:170px 90px 90px 1fr;gap:14px;align-items:center;padding:9px 0;font-size:13px}
+.stage .n{font-weight:600;color:#1D1D1F}
+.stage .t{color:#86868B;text-align:right}
+.stage .c{color:#86868B;text-align:right}
+.bar{height:12px;border-radius:6px;background:#E8F0FE}
+.bar i{display:block;height:100%;border-radius:6px;background:#0071E3}
+.bar.big i{background:#FF3B30}
+.stage.big .n{color:#FF3B30}
+.total{border-top:2px solid #1D1D1F;margin-top:12px;padding-top:14px;display:grid;grid-template-columns:170px 90px 90px 1fr;gap:14px;font-size:14px;font-weight:700;color:#1D1D1F}
+.total .t,.total .c{text-align:right}
+.note{background:#FFEBE9;border-left:4px solid #FF3B30;padding:16px 20px;border-radius:8px;font-size:14px;margin-bottom:28px}
+.note strong{color:#FF3B30}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.col h3{font-size:15px;font-weight:700;margin-bottom:12px}
+.col.g h3{color:#34C759}.col.b h3{color:#FF3B30}
+.col ul{list-style:none;font-size:13px;color:#86868B;line-height:1.9}
+.order{margin-top:36px;background:#F5F5F7;border-radius:16px;padding:26px}
+.order h3{font-size:16px;font-weight:700;margin-bottom:14px}
+.order pre{font-size:13px;color:#1D1D1F;line-height:1.9;font-family:'JetBrains Mono',monospace}
+</style></head><body>
+<div class="title">Cost &amp; Latency Budgets</div>
+<div class="sub">Almost all cost sits in one stage. Budget, profile, then optimize only that.</div>
+
+<div class="budgetbox">
+<div class="budget-label">Request budget — ≤ 2000 ms · ≤ $0.020</div>
+<div class="stage"><span class="n">1 · cache lookup</span><span class="t">~5 ms</span><span class="c">$0.0000</span><span class="bar"><i style="width:2%"></i></span></div>
+<div class="stage"><span class="n">2 · classify (small)</span><span class="t">~200 ms</span><span class="c">$0.0002</span><span class="bar"><i style="width:11%"></i></span></div>
+<div class="stage"><span class="n">3 · retrieve</span><span class="t">~150 ms</span><span class="c">$0.0001</span><span class="bar"><i style="width:8%"></i></span></div>
+<div class="stage big"><span class="n">4 · generate (big) ★</span><span class="t">~1400 ms</span><span class="c">$0.0180</span><span class="bar big"><i style="width:78%"></i></span></div>
+<div class="stage"><span class="n">5 · validate</span><span class="t">~10 ms</span><span class="c">$0.0000</span><span class="bar"><i style="width:1%"></i></span></div>
+<div class="total"><span>TOTAL</span><span class="t">~1765 ms</span><span class="c">$0.0183</span><span>✅ within budget</span></div>
+</div>
+
+<div class="note"><strong>The hidden risk: optimizing cost until quality collapses.</strong> A router that sends hard questions to a cheap model saves money and destroys trust. Optimize quality <em>subject to</em> the budget — never the reverse.</div>
+
+<div class="two">
+<div class="col g"><h3>✅ Budget when</h3><ul>
+<li>Shipping to production</li><li>Latency is user-visible</li>
+<li>Scale is high</li><li>You have SLAs</li>
+<li>Cost is unpredictable</li></ul></div>
+<div class="col b"><h3>❌ Don't budget when</h3><ul>
+<li>It's still a prototype</li><li>Quality would suffer below it</li>
+<li>You haven't measured</li>
+<li>You only cap per-request (need per-user too)</li>
+<li>You haven't profiled the dominant stage</li></ul></div>
+</div>
+
+<div class="order"><h3>⚙️ The optimization order — never skip to the bottom</h3>
+<pre>1. Cache        → eliminate the call entirely
+2. Route        → send easy work to cheap models
+3. Reduce       → trim context to what's needed
+4. Parallelize  → run independent calls together
+5. Downgrade    → smaller model (last resort)
+
+Most teams start at 5 and lose quality they didn't need to lose.
+
+Streaming doesn't cut time-to-completion — it cuts time-to-FIRST-token
+from seconds to milliseconds. Biggest perceived-speed win, costs nothing.</pre></div>
+</body></html>

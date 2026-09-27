@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>Guardrails</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:#fff;width:1400px;padding:64px}
+.title{font-size:34px;font-weight:700;color:#1D1D1F;letter-spacing:-.02em}
+.sub{font-size:16px;color:#86868B;margin:8px 0 44px}
+.pipe{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.box{background:#F5F5F7;border:1px solid #D2D2D7;border-radius:14px;padding:16px 18px;min-width:130px;text-align:center}
+.box .l{font-size:14px;font-weight:700;color:#1D1D1F}.box .s{font-size:11px;color:#86868B;margin-top:3px}
+.blue{background:#E8F0FE;border-color:#A8C7FA}.orange{background:#FFF4E5;border-color:#FFCC99}
+.green{background:#E7F8EC;border-color:#A8E0BC}.red{background:#FFEBE9;border-color:#FFB3AD}
+.arrow{font-size:20px;color:#86868B}
+.fallback{margin-top:22px;background:#FFEBE9;border:1px dashed #FF3B30;border-radius:14px;padding:18px;text-align:center;font-size:14px;color:#1D1D1F}
+.note{background:#FFF9E6;border-left:4px solid #FFCC00;padding:16px 20px;border-radius:8px;font-size:14px;margin-top:24px}
+.note strong{color:#B8860B}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:36px}
+.col h3{font-size:15px;font-weight:700;margin-bottom:12px}
+.col.g h3{color:#34C759}.col.b h3{color:#FF3B30}
+.col ul{list-style:none;font-size:13px;color:#86868B;line-height:1.9}
+.layers{margin-top:36px;background:#F5F5F7;border-radius:16px;padding:26px}
+.layers h3{font-size:16px;font-weight:700;margin-bottom:14px}
+.layers pre{font-size:13px;color:#1D1D1F;line-height:1.9;font-family:'JetBrains Mono',monospace}
+</style></head><body>
+<div class="title">Guardrails — deterministic code around a probabilistic core</div>
+<div class="sub">Hard rules deterministic. Soft quality may use a model. Never a model for safety.</div>
+
+<div class="pipe">
+<div class="box red"><div class="l">Input filter</div><div class="s">injection · length · allowlist</div></div>
+<span class="arrow">→</span>
+<div class="box blue"><div class="l">Model</div><div class="s">probabilistic core</div></div>
+<span class="arrow">→</span>
+<div class="box red"><div class="l">Output filter</div><div class="s">PII · schema · policy</div></div>
+<span class="arrow">→</span>
+<div class="box green"><div class="l">Final response</div><div class="s">safe, scrubbed</div></div>
+</div>
+<div class="fallback">Fallback path — never just reject: safe refusal · retry · human escalation</div>
+
+<div class="note"><strong>The hidden risk: over-blocking kills adoption faster than under-blocking kills trust.</strong> A user wrongly refused three times leaves. Track your false-positive rate, not just your catch rate. Above ~2%, the guardrail costs more than it protects.</div>
+
+<div class="two">
+<div class="col g"><h3>✅ Use guardrails when</h3><ul>
+<li>Output is user-facing</li><li>Actions have consequences</li>
+<li>Compliance applies (PII, medical, legal)</li><li>Injection is possible</li>
+<li>Brand risk exists</li></ul></div>
+<div class="col b"><h3>❌ Don't rely on them when</h3><ul>
+<li>Output never leaves your system</li><li>Filtering with another model for hard rules</li>
+<li>It blocks legitimate work</li><li>There's no fallback path</li>
+<li>The rule can't be expressed precisely</li><li>Guarding only the output</li></ul></div>
+</div>
+
+<div class="layers"><h3>🛡️ The layering principle — never trust one layer</h3>
+<pre>Layer 1 — Input validation      (deterministic, always on)
+Layer 2 — Prompt hardening      (instructions, best-effort)
+Layer 3 — Output schema check   (deterministic, always on)
+Layer 4 — Content policy        (deterministic + model judge)
+Layer 5 — Human escalation      (edge cases only)
+
+false_positive_rate = wrongly_blocked / total_legitimate_requests
+Target: below ~2%</pre></div>
+</body></html>
