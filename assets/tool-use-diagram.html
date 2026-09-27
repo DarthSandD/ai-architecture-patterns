@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tool Use Pattern — Diagram</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #ffffff; width: 1400px; padding: 64px; }
+.title { font-size: 34px; font-weight: 700; color: #1D1D1F; letter-spacing: -0.02em; }
+.sub { font-size: 16px; color: #86868B; margin: 8px 0 48px; }
+.flow { display: flex; flex-direction: column; gap: 0; }
+.row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.box { background: #F5F5F7; border: 1px solid #D2D2D7; border-radius: 14px; padding: 16px 18px; min-width: 130px; }
+.box .l { font-size: 14px; font-weight: 700; color: #1D1D1F; }
+.box .s { font-size: 11px; color: #86868B; margin-top: 3px; }
+.box.blue { background: #E8F0FE; border-color: #A8C7FA; }
+.box.orange { background: #FFF4E5; border-color: #FFCC99; }
+.box.red { background: #FFEBE9; border-color: #FFB3AD; }
+.box.green { background: #E7F8EC; border-color: #A8E0BC; }
+.arrow { font-size: 20px; color: #86868B; }
+.down { text-align: center; font-size: 20px; color: #86868B; padding: 10px 0; }
+.guard { border: 2px dashed #FF9500; border-radius: 16px; padding: 16px; background: #FFFDF7; }
+.guard-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #FF9500; margin-bottom: 10px; }
+.loopbox { border: 2px solid #0071E3; border-radius: 18px; padding: 24px; margin: 8px 0; background: #F7FAFF; }
+.loop-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #0071E3; margin-bottom: 14px; }
+.note { background: #FFEBE9; border-left: 4px solid #FF3B30; padding: 16px 20px; border-radius: 8px; font-size: 14px; color: #1D1D1F; margin-top: 32px; }
+.note strong { color: #FF3B30; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 40px; }
+.col h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+.col.good h3 { color: #34C759; }
+.col.bad h3 { color: #FF3B30; }
+.col ul { list-style: none; font-size: 13px; color: #86868B; line-height: 1.9; }
+.rules { margin-top: 40px; background: #F5F5F7; border-radius: 16px; padding: 28px; }
+.rules h3 { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+.rules ol { font-size: 13px; color: #1D1D1F; line-height: 2; padding-left: 20px; }
+</style>
+</head>
+<body>
+<div class="title">Tool Use — Function Calling</div>
+<div class="sub">The model never runs code. It emits a request. Your code decides whether to honor it.</div>
+
+<div class="loopbox">
+  <div class="loop-label">The agent loop — capped at MAX_ITERATIONS</div>
+  <div class="row">
+    <div class="box"><div class="l">User prompt</div><div class="s">input</div></div>
+    <span class="arrow">→</span>
+    <div class="box blue"><div class="l">LLM decides</div><div class="s">tool call or answer</div></div>
+    <span class="arrow">→</span>
+    <div class="guard">
+      <div class="guard-label">Guardrail</div>
+      <div class="row">
+        <div class="box orange"><div class="l">Validate</div><div class="s">tool name + args</div></div>
+        <span class="arrow">→</span>
+        <div class="box orange"><div class="l">Execute</div><div class="s">your code only</div></div>
+      </div>
+    </div>
+    <span class="arrow">→</span>
+    <div class="box green"><div class="l">Append result</div><div class="s">as DATA, not orders</div></div>
+  </div>
+  <div class="down">↻ loop until the model returns a final answer</div>
+  <div class="row" style="justify-content:center;">
+    <div class="box"><div class="l">Final answer</div><div class="s">grounded in tool results</div></div>
+  </div>
+</div>
+
+<div class="note">
+  <strong>The hidden risk: prompt injection.</strong> If a tool returns untrusted text (a web page, an email, a document), that text can carry instructions the model may follow. A tool result is <em>data</em>, never <em>instructions</em> — but models don't always honor that boundary. Treat tool output as hostile input, and never interpolate it into SQL, shell, or <code>eval()</code>.
+</div>
+
+<div class="two-col">
+  <div class="col good">
+    <h3>✅ Use tools when</h3>
+    <ul>
+      <li>You need live data (weather, DB, stock)</li>
+      <li>The action has side effects</li>
+      <li>You need determinism (math, dates)</li>
+      <li>The result must be authoritative</li>
+      <li>You want an audit trail</li>
+    </ul>
+  </div>
+  <div class="col bad">
+    <h3>❌ Don't use tools when</h3>
+    <ul>
+      <li>A plain prompt already answers it</li>
+      <li>A bad call is irreversible (no undo)</li>
+      <li>You have no validation layer</li>
+      <li>40 overlapping tools confuse the model</li>
+      <li>The task is pure reasoning</li>
+    </ul>
+  </div>
+</div>
+
+<div class="rules">
+  <h3>🔒 The security rules (non-negotiable)</h3>
+  <ol>
+    <li>Validate every argument — types, ranges, allowlists</li>
+    <li>Never interpolate model output into SQL / shell / eval</li>
+    <li>Allowlist, don't blocklist — define what's allowed</li>
+    <li>Separate read-only tools from side-effecting ones</li>
+    <li>Treat tool results as hostile — they can carry injected instructions</li>
+    <li>Cap the loop — always have a max iteration count</li>
+    <li>Log every call (input + output) for audit</li>
+  </ol>
+</div>
+</body>
+</html>

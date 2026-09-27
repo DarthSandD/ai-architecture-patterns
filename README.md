@@ -17,16 +17,18 @@ This is that library. One folder per pattern. Each one gives you:
 
 ## Patterns
 
-| # | Pattern | The confusion it solves |
-|---|---------|------------------------|
-| 01 | [RAG](./patterns/01-rag/) | "When do I need retrieval, and when is it just a prompt?" |
-| 02 | [Tool Use](./patterns/02-tool-use/) | "How do I let a model take actions safely?" |
-| 03 | [Multi-Agent](./patterns/03-multi-agent/) | "Do I actually need multiple agents, or one good loop?" |
-| 04 | [Memory](./patterns/04-memory/) | "Where does state live across turns?" |
-| 05 | [Evals](./patterns/05-evals/) | "How do I know it got worse?" |
-| 06 | [Guardrails](./patterns/06-guardrails/) | "How do I stop bad outputs before they ship?" |
-| 07 | [Context Engineering](./patterns/07-context-engineering/) | "Why does it forget the middle of my prompt?" |
-| 08 | [Cost & Latency Budgets](./patterns/08-cost-latency-budgets/) | "Why is this slow and expensive?" |
+| # | Pattern | Status | The confusion it solves |
+|---|---------|--------|------------------------|
+| 01 | [RAG](./patterns/01-rag/) | ✅ **built** | "When do I need retrieval, and when is it just a prompt?" |
+| 02 | [Tool Use](./patterns/02-tool-use/) | ✅ **built** | "How do I let a model take actions safely?" |
+| 03 | [Multi-Agent](./patterns/03-multi-agent/) | 🔜 planned | "Do I actually need multiple agents, or one good loop?" |
+| 04 | [Memory](./patterns/04-memory/) | 🔜 planned | "Where does state live across turns?" |
+| 05 | [Evals](./patterns/05-evals/) | 🔜 planned | "How do I know it got worse?" |
+| 06 | [Guardrails](./patterns/06-guardrails/) | 🔜 planned | "How do I stop bad outputs before they ship?" |
+| 07 | [Context Engineering](./patterns/07-context-engineering/) | 🔜 planned | "Why does it forget the middle of my prompt?" |
+| 08 | [Cost & Latency Budgets](./patterns/08-cost-latency-budgets/) | 🔜 planned | "Why is this slow and expensive?" |
+
+> **Built** = diagram + tradeoffs + runnable demo + when-NOT-to-use, all present.
 
 ---
 
